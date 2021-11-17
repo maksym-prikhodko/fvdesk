@@ -1,0 +1,16 @@
+<?php
+namespace PhpParser\Node\Expr;
+use PhpParser\Node\Expr;
+class Yield_ extends Expr
+{
+    public $key;
+    public $value;
+    public function __construct(Expr $value = null, Expr $key = null, array $attributes = array()) {
+        parent::__construct(null, $attributes);
+        $this->key = $key;
+        $this->value = $value;
+    }
+    public function getSubNodeNames() {
+        return array('key', 'value');
+    }
+}

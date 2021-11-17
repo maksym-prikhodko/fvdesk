@@ -1,0 +1,21 @@
+<?php
+namespace Psy\Test\CodeCleaner;
+use Psy\CodeCleaner\ImplicitReturnPass;
+class ImplicitReturnPassTest extends CodeCleanerTestCase
+{
+    public function setUp()
+    {
+        $this->setPass(new ImplicitReturnPass());
+    }
+    public function testProcess($from, $to)
+    {
+        $this->assertProcessesAs($from, $to);
+    }
+    public function implicitReturns()
+    {
+        return array(
+            array('4',     'return 4;'),
+            array('foo()', 'return foo();'),
+        );
+    }
+}
