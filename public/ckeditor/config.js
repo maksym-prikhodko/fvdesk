@@ -1,2 +1,0 @@
-CKEDITOR.editorConfig = function( config ) {
-};
