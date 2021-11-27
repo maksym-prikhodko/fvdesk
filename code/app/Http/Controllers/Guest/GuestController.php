@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Guest;
+<?php
+namespace App\Http\Controllers\Guest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckTicket;
 use App\Http\Requests\ProfilePassword;
@@ -95,8 +96,7 @@ class GuestController extends Controller {
 		return view('themes.default1.client.guest-user.newticket', compact('ticket'));
 	}
 	public function PostCheckTicket(CheckTicket $request, User $user, Tickets $ticket, Ticket_Thread $thread) {
-		try
-		{
+		try {
 			$user = $user->where('email', $request->input('email'))->first();
 			$tickets = $ticket->where('ticket_number', $request->input('ticket_number'))->first();
 			if ($user && $tickets) {

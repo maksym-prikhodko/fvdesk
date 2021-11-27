@@ -1,5 +1,6 @@
-<?php
-namespace App\Http\Controllers\Agent;
+<?php namespace App\Http\Controllers\Agent;
+use App;
+use App\Http\Controllers\Agent\TicketController;
 use App\Http\Controllers\Controller;
 use App\Model\Email\Emails;
 use App\Model\Ticket\Ticket_attachments;
@@ -7,6 +8,9 @@ use App\Model\Ticket\Ticket_Thread;
 class MailController extends Controller {
 	public $email = "";
 	public $stream = "";
+	public function __construct(TicketController $TicketController) {
+		$this->TicketController = $TicketController;
+	}
 	function decode_imap_text($str) {
 		$result = '';
 		$decode_header = imap_mime_header_decode($str);
@@ -24,14 +28,14 @@ class MailController extends Controller {
 					$stream = @imap_open($current_mailbox['fetching_host'], $current_mailbox['email_address'], $current_mailbox['password']);
 					$testvar = "";
 					if ($stream >= 0) {
-						$emails = imap_search($stream, 'SINCE ' . date('d-M-Y', strtotime("-10 day")));
+						$emails = imap_search($stream, 'SINCE ' . date('d-M-Y', strtotime("-1 day")));
 						if ($emails != false) {
 							if (count($emails) >= 0) {
 								rsort($emails);
 								foreach ($emails as $email_id) {
 									$overview = imap_fetch_overview($stream, $email_id, 0);
 									$var = $overview[0]->seen ? 'read' : 'unread';
-									if ($var == 'unread') {
+									if ($var == 'read') {
 										$testvar = 'set';
 										$from = $this->decode_imap_text($overview[0]->from);
 										$subject = $this->decode_imap_text($overview[0]->subject);
@@ -44,8 +48,8 @@ class MailController extends Controller {
 										$date = date('Y-m-d H:i:s', strtotime($date));
 										$system = "Email";
 										$phone = "";
-										$helptopic = $this->default_helptopic();
-										$sla = $this->default_sla();
+										$helptopic = $this->TicketController->default_helptopic();
+										$sla = $this->TicketController->default_sla();
 										$structure = imap_fetchstructure($stream, $email_id);
 										if ($structure->subtype == 'HTML') {
 											$body2 = imap_fetchbody($stream, $email_id, 1);
@@ -154,7 +158,8 @@ class MailController extends Controller {
 												}
 											}
 										}
-										if ($this->create_user($emailadd, $username, $subject, $body, $phone, $helptopic, $sla, $system) == true) {
+										$priority = '1';
+										if ($this->TicketController->create_user($emailadd, $username, $subject, $body, $phone, $helptopic, $sla, $priority, $system) == true) {
 											$thread_id = Ticket_Thread::whereRaw('id = (select max(`id`) from ticket_thread)')->first();
 											$thread_id = $thread_id->id;
 											if ($this->get_attachment($structure, $stream, $email_id, $thread_id) == true) {
@@ -226,7 +231,7 @@ class MailController extends Controller {
 					$ticket_Thread->name = $filename;
 					$ticket_Thread->size = $filesize;
 					$ticket_Thread->type = $ext;
-					$ticket_Thread->content = $fp; 
+					$ticket_Thread->content = $fp;
 					$ticket_Thread->save();
 				}
 			}

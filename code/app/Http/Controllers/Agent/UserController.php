@@ -1,10 +1,10 @@
-<?php namespace App\Http\Controllers\Agent;
+<?php
+namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfilePassword;
 use App\Http\Requests\ProfileRequest;
 use App\Http\Requests\Sys_userRequest;
 use App\Http\Requests\Sys_userUpdate;
-use App\Model\Agent_panel\Sys_user;
 use App\User;
 use Auth;
 use Hash;
@@ -15,27 +15,28 @@ class UserController extends Controller {
 		$this->middleware('role.agent');
 		$this->middleware('roles');
 	}
-	public function index(Sys_user $user) {
-		try
-		{
-			$users = $user->get();
+	public function index(User $user) {
+		try {
+			$users = $user->where('role', '=', 'user')->get();
 			return view('themes.default1.agent.user.index', compact('users'));
 		} catch (Exception $e) {
 			return view('404');
 		}
 	}
 	public function create() {
-		try
-		{
+		try {
 			return view('themes.default1.agent.user.create');
 		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function store(Sys_user $user, Sys_userRequest $request) {
-		try
-		{
-			if ($user->fill($request->input())->save() == true) {
+	public function store(User $user, Sys_userRequest $request) {
+		try {
+			$user->email = $request->input('email');
+			$user->user_name = $request->input('full_name');
+			$user->phone_number = $request->input('phone');
+			$user->role = 'user';
+			if ($user->save() == true) {
 				return redirect('user')->with('success', 'User  Created Successfully');
 			} else {
 				return redirect('user')->with('fails', 'User  can not Create');
@@ -44,27 +45,24 @@ class UserController extends Controller {
 			return redirect('user')->with('fails', 'User  can not Create');
 		}
 	}
-	public function show($id, Sys_user $user) {
-		try
-		{
+	public function show($id, User $user) {
+		try {
 			$users = $user->whereId($id)->first();
 			return view('themes.default1.agent.user.show', compact('users'));
 		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function edit($id, Sys_user $user) {
-		try
-		{
+	public function edit($id, User $user) {
+		try {
 			$users = $user->whereId($id)->first();
 			return view('themes.default1.agent.user.edit', compact('users'));
 		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function update($id, Sys_user $user, Sys_userUpdate $request) {
-		try
-		{
+	public function update($id, User $user, Sys_userUpdate $request) {
+		try {
 			$users = $user->whereId($id)->first();
 			if ($users->fill($request->input())->save() == true) {
 				return redirect('user')->with('success', 'User  Updated Successfully');
@@ -75,9 +73,8 @@ class UserController extends Controller {
 			return redirect('user')->with('fails', 'User  can not Update');
 		}
 	}
-	public function destroy($id, Sys_user $user) {
-		try
-		{
+	public function destroy($id, User $user) {
+		try {
 			$users = $user->whereId($id)->first();
 			if ($users->delete() == true) {
 				return redirect('user')->with('success', 'User  Deleted Successfully');

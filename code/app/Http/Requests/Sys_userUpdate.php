@@ -1,15 +1,14 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class Sys_userUpdate extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
-			'email' 		=> 	'required|email',
-			'phone'			=>	'size:10'
+			'email' => 'required|email',
+			'phone' => 'size:10',
 		];
 	}
 }

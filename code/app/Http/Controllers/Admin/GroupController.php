@@ -1,82 +1,57 @@
-<?php namespace App\Http\Controllers\Admin;
-use App\Http\Requests;
+<?php
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Requests\GroupRequest;
+use App\Model\Agent\Department;
 use App\Model\Agent\Groups;
 use App\Model\Agent\Group_assign_department;
-use App\Model\Agent\Department;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 class GroupController extends Controller {
-	public function __construct()
-	{
+	public function __construct() {
 		$this->middleware('auth');
 		$this->middleware('roles');
 	}
-	public function index(Groups $group, Department $department,Group_assign_department $group_assign_department)
-	{
-		try
-		{
+	public function index(Groups $group, Department $department, Group_assign_department $group_assign_department) {
+		try {
 			$groups = $group->get();
 			$departments = $department->lists('id');
-			return view('themes.default1.admin.agent.groups.index',compact('departments','group_assign_department','groups'));
-		}
-		catch(Exception $e)
-		{
+			return view('themes.default1.admin.agent.groups.index', compact('departments', 'group_assign_department', 'groups'));
+		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function create()
-	{
-		try
-		{
+	public function create() {
+		try {
 			return view('themes.default1.admin.agent.groups.create');
-		}
-		catch(Exception $e)
-		{
+		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function store(Groups $group,GroupRequest $request)
-	{
-		try
-		{
-			if($group->fill($request->input())->save()==true)
-			{
-				return redirect('groups')->with('success','Groups Created Successfully');
+	public function store(Groups $group, GroupRequest $request) {
+		try {
+			if ($group->fill($request->input())->save() == true) {
+				return redirect('groups')->with('success', 'Groups Created Successfully');
+			} else {
+				return redirect('groups')->with('fails', 'Groups can not Create');
 			}
-			else
-			{
-				return redirect('groups')->with('fails','Groups can not Create');	
-			}
-		}
-		catch(Exception $e)
-		{
-			return redirect('groups')->with('fails','Groups can not Create');
+		} catch (Exception $e) {
+			return redirect('groups')->with('fails', 'Groups can not Create');
 		}
 	}
-	public function show($id, Groups $group, Request $request)
-	{
+	public function show($id, Groups $group, Request $request) {
 	}
-	public function edit($id, Groups $group)
-	{
-		try
-		{
+	public function edit($id, Groups $group) {
+		try {
 			$groups = $group->whereId($id)->first();
-			return view('themes.default1.admin.agent.groups.edit',compact('groups'));
-		}
-		catch(Exception $e)
-		{
+			return view('themes.default1.admin.agent.groups.edit', compact('groups'));
+		} catch (Exception $e) {
 			return view('404');
 		}
 	}
-	public function update($id, Groups $group, Request $request )
-	{
-		try
-		{
-			$var = $group->whereId($id)->first() ;
+	public function update($id, Groups $group, Request $request) {
+		try {
+			$var = $group->whereId($id)->first();
 			$status = $request->Input('group_status');
 			$var->group_status = $status;
 			$createTicket = $request->Input('can_create_ticket');
@@ -105,38 +80,26 @@ class GroupController extends Controller {
 			$var->department_access = $departmentAccess;
 			$adminNotes = $request->Input('admin_notes');
 			$var->admin_notes = $adminNotes;
-			if($var->save()==true)
-			{
-				return redirect('groups')->with('success','Group Updated Successfully');
+			if ($var->save() == true) {
+				return redirect('groups')->with('success', 'Group Updated Successfully');
+			} else {
+				return redirect('groups')->with('fails', 'Group can not Update');
 			}
-			else
-			{
-				return redirect('groups')->with('fails','Group can not Update');	
-			}
-		}
-		catch(Exception $e)
-		{
-			return redirect('groups')->with('fails','Groups can not Create');
+		} catch (Exception $e) {
+			return redirect('groups')->with('fails', 'Groups can not Create');
 		}
 	}
-	public function destroy($id, Groups $group, Group_assign_department $group_assign_department)
-	{
-		try
-		{
-			$group_assign_department->where('group_id',$id)->delete();
+	public function destroy($id, Groups $group, Group_assign_department $group_assign_department) {
+		try {
+			$group_assign_department->where('group_id', $id)->delete();
 			$groups = $group->whereId($id)->first();
-			if($groups->delete()==true)
-			{
-				return redirect('groups')->with('success','Group Deleted Successfully');
+			if ($groups->delete() == true) {
+				return redirect('groups')->with('success', 'Group Deleted Successfully');
+			} else {
+				return redirect('groups')->with('fails', 'Group can not Delete');
 			}
-			else
-			{
-				return redirect('groups')->with('fails','Group can not Delete');	
-			}
-		}
-		catch(Exception $e)
-		{
-			return redirect('groups')->with('fails','Groups can not Create');
+		} catch (Exception $e) {
+			return redirect('groups')->with('fails', 'Groups can not Create');
 		}
 	}
 }

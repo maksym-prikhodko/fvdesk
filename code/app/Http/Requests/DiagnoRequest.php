@@ -1,17 +1,16 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class DiagnoRequest extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
-			'from'		=>		'required|email',
-			'to'		=>		'required|email',
-			'subject'	=>		'required',
-			'message'	=>		'required'
+			'from' => 'required|email',
+			'to' => 'required|email',
+			'subject' => 'required',
+			'message' => 'required',
 		];
 	}
 }

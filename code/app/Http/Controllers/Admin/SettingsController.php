@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Http\Requests\EmailRequest;
@@ -29,8 +30,7 @@ class SettingsController extends Controller {
 		$this->middleware('roles');
 	}
 	public function getcompany(Company $company) {
-		try
-		{
+		try {
 			$companys = $company->whereId('1')->first();
 			return view('themes.default1.admin.settings.company', compact('companys'));
 		} catch (Exception $e) {
@@ -38,8 +38,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postcompany($id, Company $company, CompanyRequest $request) {
-		try
-		{
+		try {
 			$companys = $company->whereId('1')->first();
 			if (Input::file('logo')) {
 				$name = Input::file('logo')->getClientOriginalName();
@@ -58,8 +57,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getsystem(System $system, Department $department, Timezones $timezone, Date_format $date, Date_time_format $date_time, Time_format $time, Logs $log) {
-		try
-		{
+		try {
 			$systems = $system->whereId('1')->first();
 			$departments = $department->get();
 			$timezones = $timezone->get();
@@ -69,8 +67,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postsystem($id, System $system, SystemRequest $request) {
-		try
-		{
+		try {
 			$systems = $system->whereId('1')->first();
 			if ($systems->fill($request->input())->save() == true) {
 				return redirect('getsystem')->with('success', 'System Updated Successfully');
@@ -82,8 +79,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getticket(Ticket $ticket, Sla_plan $sla, Help_topic $topic, Priority $priority) {
-		try
-		{
+		try {
 			$tickets = $ticket->whereId('1')->first();
 			$slas = $sla->get();
 			$topics = $topic->get();
@@ -93,8 +89,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postticket($id, Ticket $ticket, Request $request) {
-		try
-		{
+		try {
 			$tickets = $ticket->whereId('1')->first();
 			$tickets->fill($request->except('captcha', 'claim_response', 'assigned_ticket', 'answered_ticket', 'agent_mask', 'html', 'client_update'))->save();
 			$tickets->captcha = $request->input('captcha');
@@ -114,8 +109,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getemail(Email $email, Template $template, Emails $email1) {
-		try
-		{
+		try {
 			$emails = $email->whereId('1')->first();
 			$templates = $template->get();
 			$emails1 = $email1->get();
@@ -125,8 +119,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postemail($id, Email $email, EmailRequest $request) {
-		try
-		{
+		try {
 			$emails = $email->whereId('1')->first();
 			$emails->fill($request->except('email_fetching', 'all_emails', 'email_collaborator', 'strip', 'attachment'))->save();
 			$emails->email_fetching = $request->input('email_fetching');
@@ -144,8 +137,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getaccess(Access $access) {
-		try
-		{
+		try {
 			$accesses = $access->whereId('1')->first();
 			return view('themes.default1.admin.settings.access', compact('accesses'));
 		} catch (Exception $e) {
@@ -153,8 +145,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postaccess(Access $access, Request $request) {
-		try
-		{
+		try {
 			$accesses = $access->whereId('1')->first();
 			$accesses->fill($request->except('password_reset', 'bind_agent_ip', 'reg_require', 'quick_access'))->save();
 			$accesses->password_reset = $request->input('password_reset');
@@ -171,8 +162,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getresponder(Responder $responder) {
-		try
-		{
+		try {
 			$responders = $responder->whereId('1')->first();
 			return view('themes.default1.admin.settings.responder', compact('responders'));
 		} catch (Exception $e) {
@@ -180,8 +170,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postresponder(Responder $responder, Request $request) {
-		try
-		{
+		try {
 			$responders = $responder->whereId('1')->first();
 			$responders->new_ticket = $request->input('new_ticket');
 			$responders->agent_new_ticket = $request->input('agent_new_ticket');
@@ -198,8 +187,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function getalert(Alert $alert) {
-		try
-		{
+		try {
 			$alerts = $alert->whereId('1')->first();
 			return view('themes.default1.admin.settings.alert', compact('alerts'));
 		} catch (Exception $e) {
@@ -207,8 +195,7 @@ class SettingsController extends Controller {
 		}
 	}
 	public function postalert($id, Alert $alert, Request $request) {
-		try
-		{
+		try {
 			$alerts = $alert->whereId('1')->first();
 			$alerts->assignment_status = $request->input('assignment_status');
 			$alerts->ticket_status = $request->input('ticket_status');

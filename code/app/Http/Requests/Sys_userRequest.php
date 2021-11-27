@@ -1,16 +1,15 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class Sys_userRequest extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
-			'email' 		=> 	'required|email',
-			'full_name'		=>	'required|unique:sys_user',
-			'phone'			=>	'size:10'
+			'email' => 'required|email',
+			'full_name' => 'required|unique:sys_user',
+			'phone' => 'size:10',
 		];
 	}
 }

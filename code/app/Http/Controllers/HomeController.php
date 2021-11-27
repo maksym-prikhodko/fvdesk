@@ -1,11 +1,10 @@
-<?php namespace App\Http\Controllers;
+<?php
+namespace App\Http\Controllers;
 class HomeController extends Controller {
-	public function __construct()
-	{
-		$this->middleware('auth');
-	}
-	public function index()
-	{
-		return view('themes/default1/admin/dashboard');
-	}
+    public function __construct() {
+        $this->middleware('auth');
+    }
+    public function index() {
+        return view('themes/default1/admin/dashboard');
+    }
 }

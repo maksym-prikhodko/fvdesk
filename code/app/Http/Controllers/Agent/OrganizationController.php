@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Agent;
+<?php
+namespace App\Http\Controllers\Agent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\OrganizationRequest;
 use App\Http\Requests\OrganizationUpdate;
@@ -10,8 +11,7 @@ class OrganizationController extends Controller {
 		$this->middleware('roles');
 	}
 	public function index(Organization $org) {
-		try
-		{
+		try {
 			$orgs = $org->get();
 			return view('themes.default1.agent.organization.index', compact('orgs'));
 		} catch (Exception $e) {
@@ -19,16 +19,14 @@ class OrganizationController extends Controller {
 		}
 	}
 	public function create() {
-		try
-		{
+		try {
 			return view('themes.default1.agent.organization.create');
 		} catch (Exception $e) {
 			return view('404');
 		}
 	}
 	public function store(Organization $org, OrganizationRequest $request) {
-		try
-		{
+		try {
 			if ($org->fill($request->input())->save() == true) {
 				return redirect('organizations')->with('success', 'Organization  Created Successfully');
 			} else {
@@ -39,8 +37,7 @@ class OrganizationController extends Controller {
 		}
 	}
 	public function show($id, Organization $org) {
-		try
-		{
+		try {
 			$orgs = $org->whereId($id)->first();
 			return view('themes.default1.agent.organization.show', compact('orgs'));
 		} catch (Exception $e) {
@@ -48,8 +45,7 @@ class OrganizationController extends Controller {
 		}
 	}
 	public function edit($id, Organization $org) {
-		try
-		{
+		try {
 			$orgs = $org->whereId($id)->first();
 			return view('themes.default1.agent.organization.edit', compact('orgs'));
 		} catch (Exception $e) {
@@ -57,8 +53,7 @@ class OrganizationController extends Controller {
 		}
 	}
 	public function update($id, Organization $org, OrganizationUpdate $request) {
-		try
-		{
+		try {
 			$orgs = $org->whereId($id)->first();
 			if ($orgs->fill($request->input())->save() == true) {
 				return redirect('organizations')->with('success', 'Organization  Updated Successfully');
@@ -70,8 +65,7 @@ class OrganizationController extends Controller {
 		}
 	}
 	public function destroy($id) {
-		try
-		{
+		try {
 			$orgs = $org->whereId($id)->first();
 			if ($orgs->delete() == true) {
 				return redirect('organizations')->with('success', 'Organization  Deleted Successfully');

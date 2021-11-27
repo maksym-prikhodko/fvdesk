@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Admin;
+<?php
+namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfilePassword;
 use App\Http\Requests\ProfileRequest;
@@ -12,8 +13,7 @@ class ProfileController extends Controller {
 		$this->middleware('roles');
 	}
 	public function getProfile() {
-		try
-		{
+		try {
 			$user = Auth::user();
 			if ($user) {
 				return view('themes.default1.admin.profile', compact('user'));

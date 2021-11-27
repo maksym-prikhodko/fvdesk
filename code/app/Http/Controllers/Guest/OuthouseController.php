@@ -1,4 +1,5 @@
-<?php namespace App\Http\Controllers\Guest;
+<?php
+namespace App\Http\Controllers\Guest;
 use App\Http\Controllers\Controller;
 use App\Model\Settings\System;
 class OuthouseController extends Controller {

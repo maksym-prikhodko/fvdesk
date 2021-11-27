@@ -81,6 +81,7 @@ Route::group(['middleware' => 'role.user', 'middleware' => 'auth'], function () 
 	Route::patch('profile-password', 'Guest\GuestController@postProfilePassword');
 });
 $router->get('myticket', ['as' => 'ticket', 'uses' => 'Guest\GuestController@getMyticket']);
+Route::get('testing', 'Agent\MailController@getdata');
 $router->get('checkticket', 'Guest\GuestController@getCheckTicket');
 $router->post('postcheck', 'Guest\GuestController@PostCheckTicket');
 $router->get('postcheck', 'Guest\GuestController@PostCheckTicket');

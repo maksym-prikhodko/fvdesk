@@ -8,7 +8,6 @@ use App\Model\Ticket\Tickets;
 use App\Model\Ticket\Ticket_Thread;
 use App\User;
 use Auth;
-use DB;
 use Hash;
 use Input;
 use Mail;
@@ -55,7 +54,7 @@ class TicketController extends Controller {
 		if ($this->create_user($email, $fullname, $subject, $body, $phone, $helptopic, $sla, $priority, $system)) {
 			return Redirect('newticket')->with('success', 'success');
 		} else {
-			return Redirect('newticket')->with('success', 'success');
+			return Redirect('newticket')->with('fails', 'fails');
 		}
 	}
 	public function thread($id) {
@@ -153,16 +152,16 @@ class TicketController extends Controller {
 		}
 	}
 	public function default_helptopic() {
-		$helptopic = "Support";
+		$helptopic = "1";
 		return $helptopic;
 	}
 	public function default_sla() {
-		$sla = "12hours";
+		$sla = "1";
 		return $sla;
 	}
 	public function default_priority() {
-		$priority = "important";
-		return $helptopic;
+		$priority = "1";
+		return $prioirty;
 	}
 	public function check_ticket($user_id, $subject, $body, $helptopic, $sla, $priority) {
 		$read_ticket_number = substr($subject, 0, 6);
@@ -296,30 +295,6 @@ class TicketController extends Controller {
 		$ticket->assigned_to = 0;
 		$ticket->save();
 		return 1;
-	}
-	public function search() {
-		$product = Input::get('type');
-		$word = Input::get('name_startsWith');
-		if ($product == 'product') {
-			$starts_with = strtoupper($word);
-			$rows = DB::table('users')->select('user_name')->where('name', 'LIKE', $starts_with . '%')->get();
-			$data = array();
-			foreach ($rows as $row) {
-				array_push($data, $row->name);
-			}
-			print_r(json_encode($data));
-		}
-		if ($product == 'product_table') {
-			$row_num = Input::get('row_num');
-			$starts_with = strtoupper($word);
-			$rows = DB::table('product')->select('name', 'description', 'cost_price')->where('name', 'LIKE', $starts_with . '%')->get();
-			$data = array();
-			foreach ($rows as $row) {
-				$name = $row->name . '|' . $row->description . '|' . $row->cost_price . '|' . $row_num;
-				array_push($data, $name);
-			}
-			print_r(json_encode($data));
-		}
 	}
 	public function trash() {
 		return view('themes.default1.agent.ticket.trash');

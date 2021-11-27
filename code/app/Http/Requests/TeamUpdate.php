@@ -1,12 +1,11 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class TeamUpdate extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
 		];
 	}

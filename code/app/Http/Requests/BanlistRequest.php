@@ -1,15 +1,14 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class BanlistRequest extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
-			'email_address'		=>		'email',
-			'ban_status'		=>		'required'
+			'email_address' => 'email',
+			'ban_status' => 'required',
 		];
 	}
 }

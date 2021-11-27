@@ -1,16 +1,15 @@
-<?php namespace App\Http\Requests;
+<?php
+namespace App\Http\Requests;
 use App\Http\Requests\Request;
 class TicketRequest extends Request {
-	public function authorize()
-	{
+	public function authorize() {
 		return true;
 	}
-	public function rules()
-	{
+	public function rules() {
 		return [
-			 'To'    =>   'required',  
-   'ticket_ID'     =>   'required',
-   'ReplyContent'  =>   'required'  
+			'To' => 'required',
+			'ticket_ID' => 'required',
+			'ReplyContent' => 'required',
 		];
 	}
 }

@@ -1,4 +1,5 @@
-<?php namespace App\Http\Middleware;
+<?php
+namespace App\Http\Middleware;
 use Closure;
 class CheckRoleAgent {
 	public function handle($request, Closure $next) {
